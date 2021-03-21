@@ -2,5 +2,29 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import re
 
-print(sys.argv)
+re_str = '^(feat|fix|docs|style|refactor|test|chore)'
+# print(sys.argv)
+
+structure_msg = '''
+# header: <type>(<scope>): <subject>
+# - type: feat, fix, docs, style, refactor, test, chore
+# - scope: can be empty
+# - subject: start with verb (such as 'change'), 50-character line
+'''
+
+with open(sys.argv[1], 'rb') as f:
+    msg = f.read()
+    print(msg.decode('utf-8'))
+
+res = re.match(re_str, msg.decode('utf-8'))
+# print(res)
+
+if res:
+    print('commit success')
+else:
+    print('commit failed!')
+    print('Please check format of the commit message!')
+    print(structure_msg)
+    exit(1)
